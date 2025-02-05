@@ -1,0 +1,66 @@
+import random
+import string
+
+# Predefined lists of adjectives and nouns
+adjectives = ["Cool", "Happy", "Angry", "Mighty", "Silent", "Swift", "Brave", "Loyal"]
+nouns = ["Tiger", "Dragon", "Phoenix", "Wolf", "Lion", "Eagle", "Shark", "Bear"]
+
+# Function to generate a random username
+def generate_username(add_numbers=False, add_special=False, length=None):
+    adjective = random.choice(adjectives)
+    noun = random.choice(nouns)
+    
+    username = adjective + noun
+    
+    if add_numbers:
+        username += str(random.randint(1, 1000))  # Add a random number between 1 and 1000
+    
+    if add_special:
+        special_char = random.choice(string.punctuation)  # Add a random special character
+        username += special_char
+    
+    if length:
+        username = username[:length]  # Limit the length of the username if specified
+    
+    return username
+
+# Function to save usernames to a file
+def save_usernames_to_file(usernames, filename="usernames.txt"):
+    with open(filename, "w") as file:
+        for username in usernames:
+            file.write(username + "\n")
+
+# Main program
+def main():
+    print("Welcome to the Username Generator!")
+
+    # Get user preferences
+    add_numbers = input("Do you want to include numbers? (y/n): ").strip().lower() == 'y'
+    add_special = input("Do you want to include special characters? (y/n): ").strip().lower() == 'y'
+    length_input = input("Do you want to specify the username length? (y/n): ").strip().lower()
+    
+    if length_input == 'y':
+        length = int(input("Enter the desired username length: "))
+    else:
+        length = None
+    
+    # Number of usernames to generate
+    num_usernames = int(input("How many usernames would you like to generate? "))
+    
+    # Generate and store the usernames
+    usernames = [generate_username(add_numbers, add_special, length) for _ in range(num_usernames)]
+    
+    # Display the generated usernames
+    print("\nGenerated Usernames:")
+    for username in usernames:
+        print(username)
+
+    # Save to a file
+    save_to_file = input("Would you like to save the usernames to a file? (y/n): ").strip().lower()
+    if save_to_file == 'y':
+        save_usernames_to_file(usernames)
+        print("Usernames saved to 'usernames.txt'.")
+
+# Run the program
+if __name__ == "__main__":
+    main()
